@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { projectsData } from "@/app/projects/data";
-import ProjectDetailHeader from "@/app/components/ProjectDetailHeader";
-import Footer from "@/app/components/Footer";
-import ProjectCard from "@/app/projects/components/ProjectCard";
+import { projectsData } from "@/data/projects";
+import ProjectDetailHeader from "@/components/layout/ProjectDetailHeader";
+import Footer from "@/components/layout/Footer";
+import ProjectCard from "@/components/ui/ProjectCard";
 
 export const metadata: Metadata = {
   title: "Projects | Reval — Full-Stack Web Developer",

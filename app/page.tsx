@@ -1,14 +1,14 @@
-import Header from "@/app/components/Header";
-import Hero from "@/app/components/Hero";
-import About from "@/app/components/About";
-import Logobar from "@/app/components/Logobar";
-import Skills from "@/app/components/Skills";
-import Experience from "@/app/components/Experience";
-import Values from "@/app/components/Values";
-import ProjectsShowcase from "@/app/components/ProjectsShowcase";
-import Workflow from "@/app/components/Workflow";
-import ContactForm from "@/app/components/ContactForm";
-import Footer from "@/app/components/Footer";
+import Header from "@/components/layout/Header";
+import Hero from "@/components/sections/Hero";
+import About from "@/components/sections/About";
+import Logobar from "@/components/layout/Logobar";
+import Skills from "@/components/sections/Skills";
+import Experience from "@/components/sections/Experience";
+import Values from "@/components/sections/Values";
+import ProjectsShowcase from "@/components/sections/ProjectsShowcase";
+import Workflow from "@/components/sections/Workflow";
+import ContactForm from "@/components/sections/ContactForm";
+import Footer from "@/components/layout/Footer";
 
 export default function Home() {
   return (

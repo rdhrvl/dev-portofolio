@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { projectsData } from "@/app/projects/data";
-import ProjectDetailHeader from "@/app/components/ProjectDetailHeader";
-import Footer from "@/app/components/Footer";
-import PhantomLoader from "@/app/projects/[slug]/components/PhantomLoader";
+import { projectsData } from "@/data/projects";
+import ProjectDetailHeader from "@/components/layout/ProjectDetailHeader";
+import Footer from "@/components/layout/Footer";
+import PhantomLoader from "@/components/ui/PhantomLoader";
+import ImagePreview from "@/components/ui/ImagePreview";
 
 const navLinks = [
   { href: "/projects", label: "Projects", id: "nav_list_project" },
@@ -183,11 +183,9 @@ export default async function ProjectDetailPage({ params }: Props) {
                     }`}
                   >
                     <div className="w-full lg:w-1/2 relative aspect-video rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-md">
-                      <Image
+                      <ImagePreview
                         src={feature.image}
                         alt={feature.title}
-                        fill
-                        className="object-cover"
                       />
                     </div>
                     <div className="w-full lg:w-1/2">

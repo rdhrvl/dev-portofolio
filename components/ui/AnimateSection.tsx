@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView, Variants } from "framer-motion";
+import { motion, useInView, useReducedMotion, Variants } from "framer-motion";
 import { useRef } from "react";
 
 type AnimationVariant = "fadeUp" | "fadeDown" | "fadeLeft" | "fadeRight" | "scaleUp" | "fade";
@@ -51,6 +51,10 @@ export function AnimateSection({
 }: AnimateSectionProps) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once, margin: "0px" });
+  const shouldReduceMotion = useReducedMotion();
+
+  // If user requests reduced motion, bypass translation animations by mapping to basic opacity fade
+  const activeVariant = shouldReduceMotion ? "fade" : variant;
 
   return (
     <motion.div
@@ -58,11 +62,11 @@ export function AnimateSection({
       className={className}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      variants={variants[variant]}
+      variants={variants[activeVariant]}
       transition={{
-        duration,
+        duration: shouldReduceMotion ? 0.2 : duration,
         delay,
-        ease: [0.21, 0.47, 0.32, 0.98],
+        ease: [0.21, 0.47, 0.32, 0.98] as [number, number, number, number],
       }}
     >
       {children}
@@ -115,11 +119,17 @@ export function StaggerItem({
   className?: string;
   variant?: AnimationVariant;
 }) {
+  const shouldReduceMotion = useReducedMotion();
+  const activeVariant = shouldReduceMotion ? "fade" : variant;
+
   return (
     <motion.div
       className={className}
-      variants={variants[variant]}
-      transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
+      variants={variants[activeVariant]}
+      transition={{
+        duration: shouldReduceMotion ? 0.2 : 0.6,
+        ease: [0.21, 0.47, 0.32, 0.98] as [number, number, number, number],
+      }}
     >
       {children}
     </motion.div>

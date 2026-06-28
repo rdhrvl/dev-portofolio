@@ -61,11 +61,11 @@ export async function sendEmailAction(formData: {
       success: true,
       message: "Message sent successfully!"
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("SMTP error:", error);
     return {
       success: false,
-      message: error.message || "Failed to send email."
+      message: error instanceof Error ? error.message : "Failed to send email."
     };
   }
 }

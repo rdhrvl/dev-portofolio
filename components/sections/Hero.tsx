@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
+import { motion, useMotionValue, useTransform, useSpring, useReducedMotion } from "framer-motion";
+import gsap from "gsap";
 
 export default function Hero() {
   const [terminalTab, setTerminalTab] = useState<'terminal' | 'editor' | 'git'>('terminal');
@@ -11,6 +12,53 @@ export default function Hero() {
     "Type 'help' to see available commands.",
     ""
   ]);
+
+  const shouldReduceMotion = useReducedMotion();
+  const backgroundRef = useRef<HTMLDivElement>(null);
+
+  // Floating background gradient animation using GSAP
+  useEffect(() => {
+    if (shouldReduceMotion) return;
+    const element = backgroundRef.current;
+    if (!element) return;
+
+    const tween = gsap.to(element, {
+      x: "10%",
+      y: "15%",
+      duration: 12,
+      repeat: -1,
+      yoyo: true,
+      ease: "power1.inOut",
+    });
+
+    return () => {
+      tween.kill();
+    };
+  }, [shouldReduceMotion]);
+
+  // Terminal Perspective Tilt using Framer Motion
+  const cardRef = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]), { stiffness: 150, damping: 25 });
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]), { stiffness: 150, damping: 25 });
+
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (shouldReduceMotion || !cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = event.clientX - rect.left - width / 2;
+    const mouseY = event.clientY - rect.top - height / 2;
+    x.set(mouseX / width);
+    y.set(mouseY / height);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
 
   const mockCode = `<?php
 
@@ -86,9 +134,22 @@ class ProjectShowcase extends Component
     setCommandInput('');
   };
 
+  const headlineText = "Next.js & Laravel engineer building fast, client-ready web products.";
+  const words = headlineText.split(" ");
+
   return (
     <section className="relative py-20 lg:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:grid lg:grid-cols-12 lg:gap-x-12 lg:items-center">
+      {/* Blurred background radial gradient */}
+      {!shouldReduceMotion && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+          <div
+            ref={backgroundRef}
+            className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-slate-900/5 blur-[120px]"
+          />
+        </div>
+      )}
+
+      <div className="mx-auto max-w-7xl px-6 lg:grid lg:grid-cols-12 lg:gap-x-12 lg:items-center relative z-10">
         <div className="lg:col-span-6 flex flex-col justify-center">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
@@ -99,49 +160,78 @@ class ProjectShowcase extends Component
             <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
             Open for Contract Opportunities
           </motion.div>
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
-            className="text-4xl font-bold tracking-tight text-slate-900 sm:text-6xl max-w-xl leading-none"
-          >
-            Next.js &amp; Laravel engineer building fast, client-ready web products.
-          </motion.h1>
+
+          <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-6xl max-w-xl leading-none flex flex-wrap gap-x-[0.3em] gap-y-2">
+            {words.map((word, i) => (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: 0.7,
+                  ease: [0.16, 1, 0.3, 1],
+                  delay: 0.2 + i * 0.08,
+                }}
+                className="inline-block"
+              >
+                {word}
+              </motion.span>
+            ))}
+          </h1>
+
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
             className="mt-6 text-lg leading-relaxed text-slate-600 max-w-lg"
           >
             I design and engineer responsive Next.js web applications, custom backend API services, and high-speed database systems with an absolute focus on clean software execution.
           </motion.p>
+
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+              type: "spring",
+              stiffness: 100,
+              damping: 15,
+              delay: 0.9,
+            }}
             className="mt-10 flex flex-wrap items-center gap-4"
           >
-            <a
+            <motion.a
               href="#contact"
               className="inline-flex h-11 items-center justify-center rounded-lg bg-slate-900 px-6 text-sm font-semibold text-white shadow-md hover:bg-slate-800 transition-colors"
+              whileHover={shouldReduceMotion ? {} : { y: -2, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.2)" }}
+              transition={{ duration: 0.2 }}
             >
               Discuss Your Project
-            </a>
-            <a
+            </motion.a>
+            <motion.a
               href="#projects"
               className="inline-flex h-11 items-center justify-center rounded-lg border border-slate-200 bg-white px-6 text-sm font-semibold text-slate-600 hover:bg-slate-50 transition-colors"
+              whileHover={shouldReduceMotion ? {} : { y: -2 }}
+              transition={{ duration: 0.2 }}
             >
               View My Projects
-            </a>
+            </motion.a>
           </motion.div>
         </div>
+
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
+          initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.3, duration: 0.7, ease: "easeOut" }}
           className="mt-16 sm:mt-24 lg:mt-0 lg:col-span-6 relative flex justify-center"
+          style={{ perspective: 1000 }}
         >
-          <div className="w-full max-w-xl aspect-[4/3] bg-slate-950 text-slate-200 rounded-xl overflow-hidden border border-slate-800 shadow-2xl flex flex-col font-mono text-xs">
+          <motion.div
+            ref={cardRef}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            style={{ rotateX, rotateY }}
+            className="w-full max-w-xl aspect-[4/3] bg-slate-950 text-slate-200 rounded-xl overflow-hidden border border-slate-800 shadow-2xl flex flex-col font-mono text-xs cursor-pointer select-none"
+          >
             {/* Window Header */}
             <div className="bg-slate-900 px-4 py-3 flex items-center justify-between border-b border-slate-800/60 select-none">
               <div className="flex gap-1.5">
@@ -209,7 +299,7 @@ class ProjectShowcase extends Component
                 <pre className="text-[11px] leading-relaxed whitespace-pre-wrap select-text overflow-x-auto text-slate-300">
                   <code>
                     {mockCode.split('\n').map((line, i) => {
-                      let styledLine = line
+                      const styledLine = line
                         .replace(/(class|namespace|use|public|function|return)/g, '<span class="text-pink-400 font-semibold">$1</span>')
                         .replace(/(mount|render|where|orderBy|get)/g, '<span class="text-blue-400">$1</span>')
                         .replace(/(\$this|\$projects)/g, '<span class="text-amber-400">$1</span>')
@@ -237,7 +327,7 @@ class ProjectShowcase extends Component
                 </div>
               )}
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

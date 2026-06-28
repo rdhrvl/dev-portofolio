@@ -1,14 +1,37 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useMotionValueEvent, useReducedMotion } from "framer-motion";
+import { useState } from "react";
 
 export default function Header() {
+  const { scrollY } = useScroll();
+  const [hasBorder, setHasBorder] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    if (latest > 80) {
+      setHasBorder(true);
+    } else {
+      setHasBorder(false);
+    }
+  });
+
+  const navLinks = [
+    { href: "#about", label: "About Me" },
+    { href: "#skills", label: "Proficiency" },
+    { href: "#experience", label: "Experience" },
+    { href: "#projects", label: "Projects" },
+    { href: "#contact", label: "Contact" },
+  ];
+
   return (
     <motion.header
-      className="sticky top-0 z-50 w-full bg-slate-50/80 backdrop-blur-md"
-      initial={{ y: -64, opacity: 0 }}
+      className={`sticky top-0 z-50 w-full bg-slate-50/80 backdrop-blur-md transition-all duration-300 ${
+        hasBorder ? "border-b border-slate-200/80 shadow-sm" : "border-b border-transparent"
+      }`}
+      initial={shouldReduceMotion ? { y: 0, opacity: 1 } : { y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] }}
+      transition={{ type: "spring", stiffness: 120, damping: 20 }}
     >
       <div className="mx-auto flex max-w-7xl h-16 items-center justify-between px-6">
         <motion.div
@@ -22,13 +45,25 @@ export default function Header() {
           </svg>
           <span className="font-bold tracking-tight text-slate-900">reval.dev</span>
         </motion.div>
+        
         <nav className="hidden md:flex items-center gap-8">
-          <a href="#about" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">About Me</a>
-          <a href="#skills" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Proficiency</a>
-          <a href="#experience" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Experience</a>
-          <a href="#projects" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Projects</a>
-          <a href="#contact" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Contact</a>
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="relative py-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors group"
+            >
+              {link.label}
+              {!shouldReduceMotion && (
+                <motion.span
+                  className="absolute bottom-0 left-0 w-full h-[2px] bg-slate-900 origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"
+                  style={{ transformOrigin: "left" }}
+                />
+              )}
+            </a>
+          ))}
         </nav>
+
         <div className="flex items-center gap-3">
           <a
             href="https://wa.me/6285179726816"
@@ -42,12 +77,23 @@ export default function Header() {
             </svg>
             WhatsApp
           </a>
-          <a
+          <motion.a
             href="#contact"
-            className="inline-flex h-9 items-center justify-center rounded-lg bg-slate-900 px-4 text-xs font-semibold text-white shadow-sm hover:bg-slate-800 transition-colors"
+            className="relative overflow-hidden inline-flex h-9 items-center justify-center rounded-lg bg-slate-900 px-4 text-xs font-semibold text-white shadow-sm transition-colors"
+            whileHover="hover"
           >
-            Get In Touch
-          </a>
+            {!shouldReduceMotion && (
+              <motion.div
+                className="absolute inset-0 bg-slate-800"
+                initial={{ x: "-100%" }}
+                variants={{
+                  hover: { x: 0 },
+                }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+              />
+            )}
+            <span className="relative z-10">Get In Touch</span>
+          </motion.a>
         </div>
       </div>
     </motion.header>
