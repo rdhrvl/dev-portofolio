@@ -5,26 +5,25 @@ import { AnimateSection, StaggerContainer, StaggerItem } from "@/components/ui/A
 
 const experienceData = [
   {
-    role: "Freelance Full-Stack Developer",
-    client: "Client — Fintech Dashboard",
-    period: "Jan 2024 – Mar 2024",
+    role: "Full Stack Engineer",
+    client: "Freelance",
+    period: "Mar 2025 – Feb 2026",
     outcomes: [
-      "Built a real-time analytics dashboard using Next.js and Laravel",
-      "Reduced API response time by 35% through query optimization",
-      "Delivered ahead of schedule with full test coverage",
+      "Designed and developed custom websites using PHP-based CMS platforms including WordPress and Shopify, delivering client-ready web properties across multiple industries.",
+      "Built and configured page layouts using Elementor and Avada, translating design mockups into fully responsive, production-grade sites.",
+      "Assisted clients with Google Analytics, Google Tag Manager, and Google Ads integration — ensuring accurate tracking pipelines and ad conversion measurement across their web properties.",
     ],
-    stack: ["Next.js", "Laravel", "TypeScript", "MySQL"],
+    stack: ["PHP", "JavaScript", "WordPress", "Shopify", "Elementor", "Google Analytics", "Google Tag Manager"],
   },
   {
-    role: "Full-Stack Web Programmer",
-    client: "Client — E-Commerce Storefront",
-    period: "Oct 2023 – Dec 2023",
+    role: "WordPress Developer Intern",
+    client: "Mozaik Furniture · Internship",
+    period: "Jul 2023 – Sep 2023",
     outcomes: [
-      "Designed and deployed a high-performance headless commerce frontend",
-      "Integrated secure payment gateways and webhook handling logic",
-      "Improved mobile responsiveness and accessibility scores to 95+",
+      "Built 2 company profile websites from scratch for a furniture manufacturer using WordPress and Elementor.",
+      "Collaborated with 1 team member to design and deliver fully responsive layouts showcasing Mozaik's furniture catalog, brand story, and contact information.",
     ],
-    stack: ["React", "Livewire", "Tailwind CSS", "PostgreSQL"],
+    stack: ["WordPress", "Elementor"],
   },
 ];
 
@@ -80,6 +79,9 @@ export default function Experience() {
                 <StaggerItem key={idx} className="relative pl-8 group">
                   {/* Timeline node dot with scroll animation + hover zoom + pulse light-on shadow for current role */}
                   <motion.div
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-100px" }}
                     variants={dotVariants}
                     whileHover={shouldReduceMotion ? {} : { scale: 1.3 }}
                     className={`absolute -left-[6px] top-1.5 h-3.5 w-3.5 rounded-full border-2 border-white shadow-sm z-10 transition-shadow duration-300 ${isCurrent

@@ -26,6 +26,6 @@ export const eHotelPpkd: Project = {
       image: "/bookings.png"
     }
   ],
-  featured: false,
+  featured: true,
   liveUrl: "https://ppkd-hotel.vercel.app"
 };

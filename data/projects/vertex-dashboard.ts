@@ -26,5 +26,5 @@ export const vertexDashboard: Project = {
       image: "/vertex_detail_2.png"
     }
   ],
-  featured: true
+  featured: false
 };
