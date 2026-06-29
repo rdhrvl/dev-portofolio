@@ -1,7 +1,12 @@
 "use client";
 
-import { motion, useReducedMotion, Variants } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { AnimateSection, StaggerContainer, StaggerItem } from "@/components/ui/AnimateSection";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const experienceData = [
   {
@@ -29,24 +34,34 @@ const experienceData = [
 
 export default function Experience() {
   const shouldReduceMotion = useReducedMotion();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const lineRef = useRef<HTMLDivElement>(null);
+  const [animProgress, setAnimProgress] = useState(0);
 
-  // Explicitly type variants using framer-motion's Variants interface to satisfy TypeScript checking
-  const lineVariants: Variants = {
-    hidden: { scaleY: 0 },
-    visible: {
-      scaleY: 1,
-      transition: { duration: 0.8, ease: "easeOut" },
-    },
-  };
+  useEffect(() => {
+    if (shouldReduceMotion) return;
 
-  const dotVariants: Variants = {
-    hidden: { scale: 0, opacity: 0 },
-    visible: {
-      scale: 1,
-      opacity: 1,
-      transition: { type: "spring", stiffness: 200, damping: 15 },
-    },
-  };
+    const trigger = ScrollTrigger.create({
+      trigger: containerRef.current,
+      start: "top 75%",
+      once: true,
+      onEnter: () => {
+        // Animate line from bottom to top
+        gsap.to(lineRef.current, {
+          scaleY: 1,
+          duration: 1.5,
+          ease: "none",
+          onUpdate: function() {
+            setAnimProgress(this.progress());
+          }
+        });
+      },
+    });
+
+    return () => {
+      trigger.kill();
+    };
+  }, [shouldReduceMotion]);
 
   return (
     <section id="experience" className="py-24 sm:py-32">
@@ -60,40 +75,39 @@ export default function Experience() {
           </p>
         </AnimateSection>
 
-        <div className="mx-auto max-w-3xl relative">
-          {/* Animated vertical timeline line */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={lineVariants}
-            style={{ transformOrigin: "top" }}
-            className="absolute left-4 top-2 bottom-2 w-[2px] bg-slate-200"
+        <div ref={containerRef} className="mx-auto max-w-3xl relative">
+          {/* Background track (always visible, static) */}
+          <div className="absolute left-4 top-2 bottom-2 w-[2px] bg-slate-100" />
+
+          {/* Animated fill line */}
+          <div
+            ref={lineRef}
+            style={{ height: "100%", transform: "scaleY(0)" }}
+            className="absolute left-4 top-2 bottom-2 w-[2px] bg-slate-300 z-0 origin-bottom"
           />
 
           <StaggerContainer className="relative ml-4 space-y-12">
             {experienceData.map((exp, idx) => {
-              const isCurrent = idx === 0; // The first item represents the most recent/current role
+              const isCurrent = idx === 0;
+              // Calculate threshold based on bottom-up progress
+              // The newest item (top, idx 0) activates at the end (0.95)
+              // Older items activate earlier based on their position
+              const threshold = idx === 0 ? 0.95 : 1 - (idx / experienceData.length) - 0.15;
+              const isActive = shouldReduceMotion ? true : animProgress >= threshold;
 
               return (
                 <StaggerItem key={idx} className="relative pl-8 group">
-                  {/* Timeline node dot with scroll animation + hover zoom + pulse light-on shadow for current role */}
-                  <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, margin: "-100px" }}
-                    variants={dotVariants}
-                    whileHover={shouldReduceMotion ? {} : { scale: 1.3 }}
-                    className={`absolute -left-[6px] top-1.5 h-3.5 w-3.5 rounded-full border-2 border-white shadow-sm z-10 transition-shadow duration-300 ${isCurrent
-                        ? "bg-slate-900 ring-4 ring-slate-900/20 shadow-[0_0_12px_rgba(15,23,42,0.6)]"
-                        : "bg-slate-400"
-                      }`}
-                  >
-                    {/* Glowing pulse ring animation for current node */}
+                  <div className={`absolute -left-[5px] top-2 w-3 h-3 rounded-full border-2 transition-all duration-[350ms] shrink-0 z-10 flex items-center justify-center ${
+                    !isActive
+                      ? "border-slate-200 bg-white"
+                      : isCurrent
+                        ? "border-slate-900 bg-slate-900 shadow-[0_0_12px_rgba(15,23,42,0.4)] ring-4 ring-slate-900/20"
+                        : "border-slate-300 bg-slate-300"
+                  }`}>
                     {isCurrent && !shouldReduceMotion && (
-                      <span className="absolute -inset-1 rounded-full bg-slate-900/30 animate-ping z-[-1]" />
+                      <span className="absolute -inset-1.5 rounded-full bg-slate-900/30 animate-ping z-[-1]" />
                     )}
-                  </motion.div>
+                  </div>
 
                   <motion.div
                     whileHover={shouldReduceMotion ? {} : { x: 4 }}

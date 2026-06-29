@@ -19,7 +19,7 @@ export default function ProjectCardShowcase({ project, index }: ProjectCardShowc
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-100px" }}
+      viewport={{ once: true, margin: "-80px" }}
       variants={shouldReduceMotion ? {} : (isEven ? slideInLeft : slideInRight)}
       className={`flex flex-col gap-12 lg:items-center ${
         isEven ? "lg:flex-row" : "lg:flex-row-reverse"
@@ -27,8 +27,8 @@ export default function ProjectCardShowcase({ project, index }: ProjectCardShowc
     >
       <div className="w-full lg:w-1/2 relative aspect-video rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 shadow-md group">
         <motion.div
-          whileHover={shouldReduceMotion ? {} : { scale: 1.05 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
+          whileHover={shouldReduceMotion ? {} : { scale: 1.03 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
           className="w-full h-full relative"
         >
           <Image
@@ -44,6 +44,7 @@ export default function ProjectCardShowcase({ project, index }: ProjectCardShowc
           <motion.div
             initial={{ opacity: 0 }}
             whileHover={{ opacity: 1 }}
+            transition={{ duration: 0.2 }}
             className="absolute inset-0 bg-slate-950/40 backdrop-blur-[2px] flex items-center justify-center pointer-events-none"
           >
             <span className="bg-white text-slate-900 px-4 py-2 rounded-lg text-xs font-bold shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
@@ -55,8 +56,8 @@ export default function ProjectCardShowcase({ project, index }: ProjectCardShowc
 
       <motion.div
         className="w-full lg:w-1/2"
-        whileHover={shouldReduceMotion ? {} : { y: -6 }}
-        transition={{ duration: 0.3, ease: "easeOut" }}
+        whileHover={shouldReduceMotion ? {} : { y: -4 }}
+        transition={{ duration: 0.25, ease: "easeOut" }}
       >
         <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">{project.category}</span>
         <h3 className="mt-2 text-2xl font-bold text-slate-900">{project.title}</h3>

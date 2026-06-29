@@ -88,7 +88,7 @@ export default function ContactForm() {
                     scaleX: activeField === "name" ? 1 : 0,
                     opacity: activeField === "name" ? 1 : 0,
                   }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  transition={{ duration: 0.25, ease: "easeOut" }}
                   className="absolute bottom-0 left-0 h-[2px] bg-slate-900 w-full origin-left"
                 />
               )}
@@ -115,7 +115,7 @@ export default function ContactForm() {
                     scaleX: activeField === "email" ? 1 : 0,
                     opacity: activeField === "email" ? 1 : 0,
                   }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  transition={{ duration: 0.25, ease: "easeOut" }}
                   className="absolute bottom-0 left-0 h-[2px] bg-slate-900 w-full origin-left"
                 />
               )}
@@ -142,7 +142,7 @@ export default function ContactForm() {
                     scaleX: activeField === "details" ? 1 : 0,
                     opacity: activeField === "details" ? 1 : 0,
                   }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  transition={{ duration: 0.25, ease: "easeOut" }}
                   className="absolute bottom-0 left-0 h-[2px] bg-slate-900 w-full origin-left"
                 />
               )}
@@ -171,7 +171,7 @@ export default function ContactForm() {
                     {isSending ? "Sending..." : feedback?.success ? "Message Sent" : "Send Message"}
                   </span>
                   {!isSending && !feedback?.success && !shouldReduceMotion && (
-                    <span className="inline-block transform transition-transform duration-300 group-hover/btn:translate-x-1">
+                    <span className="inline-block transform transition-transform duration-200 group-hover/btn:translate-x-1">
                       →
                     </span>
                   )}

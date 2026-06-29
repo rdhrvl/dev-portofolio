@@ -57,7 +57,7 @@ export default function Skills() {
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const triggerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  const isInView = useInView(containerRef, { once: true, margin: "-80px" });
   const shouldReduceMotion = useReducedMotion();
 
   // Scroll clip-path reveal for section title
@@ -72,7 +72,7 @@ export default function Skills() {
       onEnter: () => {
         gsap.to(titleElement, {
           clipPath: "inset(0 0% 0 0)",
-          duration: 0.8,
+          duration: 0.75,
           ease: "power3.out",
         });
       },
@@ -100,7 +100,7 @@ export default function Skills() {
         onEnter: () => {
           gsap.to(bar, {
             width: targetPercent,
-            duration: shouldReduceMotion ? 0.3 : 1.2,
+            duration: shouldReduceMotion ? 0.3 : 1.0,
             ease: "power2.out",
           });
         },

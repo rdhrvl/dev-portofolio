@@ -56,7 +56,7 @@ export default function Header() {
               {link.label}
               {!shouldReduceMotion && (
                 <motion.span
-                  className="absolute bottom-0 left-0 w-full h-[2px] bg-slate-900 origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"
+                  className="absolute bottom-0 left-0 w-full h-[2px] bg-slate-900 origin-left scale-x-0 transition-transform duration-200 ease-out group-hover:scale-x-100"
                   style={{ transformOrigin: "left" }}
                 />
               )}

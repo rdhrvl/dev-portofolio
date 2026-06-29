@@ -3,6 +3,7 @@ import { projectsData } from "@/data/projects";
 import ProjectDetailHeader from "@/components/layout/ProjectDetailHeader";
 import Footer from "@/components/layout/Footer";
 import ProjectCard from "@/components/ui/ProjectCard";
+import { ProjectsPageEntrance, ProjectsListStagger, ProjectCardAnim } from "@/components/ui/ProjectsAnimators";
 
 export const metadata: Metadata = {
   title: "Projects | Reval — Full-Stack Web Developer",
@@ -20,7 +21,7 @@ export default function ProjectsPage() {
       <ProjectDetailHeader navLinks={navLinks} logoId="logo_home_link" />
 
       {/* Hero / Header Section */}
-      <section className="py-16 sm:py-24 border-b border-slate-200 bg-white">
+      <ProjectsPageEntrance className="py-16 sm:py-24 border-b border-slate-200 bg-white block">
         <div className="mx-auto max-w-7xl px-6">
           <h1 className="text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
             My Built Projects
@@ -29,16 +30,18 @@ export default function ProjectsPage() {
             A comprehensive list of web applications, custom platforms, and production software I have engineered. Click any card to read technical details and architecture logs.
           </p>
         </div>
-      </section>
+      </ProjectsPageEntrance>
 
       {/* Projects List Section */}
       <section className="py-20">
         <div className="mx-auto max-w-7xl px-6">
-          <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
+          <ProjectsListStagger className="grid grid-cols-1 gap-12 md:grid-cols-2">
             {projectsData.map((project) => (
-              <ProjectCard key={project.id} project={project} />
+              <ProjectCardAnim key={project.id}>
+                <ProjectCard project={project} />
+              </ProjectCardAnim>
             ))}
-          </div>
+          </ProjectsListStagger>
         </div>
       </section>
 

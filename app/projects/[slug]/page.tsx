@@ -6,6 +6,7 @@ import ProjectDetailHeader from "@/components/layout/ProjectDetailHeader";
 import Footer from "@/components/layout/Footer";
 import PhantomLoader from "@/components/ui/PhantomLoader";
 import ImagePreview from "@/components/ui/ImagePreview";
+import { ProjectDetailHeroAnim, ProjectDetailStagger, ProjectDetailStaggerItem, ProjectDetailBackAnim } from "@/components/ui/ProjectsAnimators";
 
 const navLinks = [
   { href: "/projects", label: "Projects", id: "nav_list_project" },
@@ -55,7 +56,7 @@ export default async function ProjectDetailPage({ params }: Props) {
         <PhantomLoader>
           <div className="mx-auto max-w-7xl px-6">
             {/* Breadcrumb */}
-            <div className="mb-8">
+            <ProjectDetailBackAnim className="mb-8">
               <Link
                 href="/projects"
                 id={`breadcrumb_projects_${project.id}`}
@@ -63,10 +64,10 @@ export default async function ProjectDetailPage({ params }: Props) {
               >
                 ← All Projects
               </Link>
-            </div>
+            </ProjectDetailBackAnim>
 
             {/* Project Title Block */}
-            <div className="border-b border-slate-200 pb-8">
+            <ProjectDetailHeroAnim className="border-b border-slate-200 pb-8">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
                 {project.category}
               </span>
@@ -102,7 +103,7 @@ export default async function ProjectDetailPage({ params }: Props) {
                   </a>
                 </div>
               )}
-            </div>
+            </ProjectDetailHeroAnim>
 
             {/* Metadata Grid (Client, Goal, Stack) */}
             <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-12">
@@ -174,9 +175,9 @@ export default async function ProjectDetailPage({ params }: Props) {
                 Detailed interface captures and feature specifications for the project.
               </p>
 
-              <div className="mt-12 space-y-20">
+              <ProjectDetailStagger className="mt-12 space-y-20">
                 {project.features.map((feature, index) => (
-                  <div
+                  <ProjectDetailStaggerItem
                     key={index}
                     className={`flex flex-col gap-12 lg:items-center ${
                       index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
@@ -199,9 +200,9 @@ export default async function ProjectDetailPage({ params }: Props) {
                         {feature.description}
                       </p>
                     </div>
-                  </div>
+                  </ProjectDetailStaggerItem>
                 ))}
-              </div>
+              </ProjectDetailStagger>
             </div>
           </div>
         </PhantomLoader>

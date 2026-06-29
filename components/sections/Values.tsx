@@ -7,7 +7,7 @@ import { fadeUp } from "@/lib/animations";
 
 export default function Values() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  const isInView = useInView(containerRef, { once: true, margin: "-80px" });
   const shouldReduceMotion = useReducedMotion();
 
   const valuesData = [
@@ -56,11 +56,11 @@ export default function Values() {
                     ? {}
                     : {
                         borderColor: "#0f172a", // border-slate-900
-                        y: -6,
+                        y: -4,
                         boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
                       }
                 }
-                className="flex flex-col p-8 rounded-2xl border border-slate-200 bg-white transition-all duration-250 group"
+                className="flex flex-col p-8 rounded-2xl border border-slate-200 bg-white transition-all duration-200 ease-out group"
               >
                 <dt className="text-lg font-semibold leading-7 text-slate-900">
                   {item.title}

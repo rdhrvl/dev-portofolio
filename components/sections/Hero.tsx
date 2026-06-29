@@ -41,8 +41,8 @@ export default function Hero() {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [8, -8]), { stiffness: 150, damping: 25 });
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-8, 8]), { stiffness: 150, damping: 25 });
+  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [5, -5]), { stiffness: 100, damping: 30 });
+  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-5, 5]), { stiffness: 100, damping: 30 });
 
   const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
     if (shouldReduceMotion || !cardRef.current) return;
@@ -170,7 +170,7 @@ class ProjectShowcase extends Component
                 transition={{
                   duration: 0.7,
                   ease: [0.16, 1, 0.3, 1],
-                  delay: 0.2 + i * 0.08,
+                  delay: 0.2 + i * 0.06,
                 }}
                 className="inline-block"
               >
@@ -182,7 +182,7 @@ class ProjectShowcase extends Component
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, duration: 0.6 }}
+            transition={{ delay: 0.45, duration: 0.55 }}
             className="mt-6 text-lg leading-relaxed text-slate-600 max-w-lg"
           >
             I design and engineer responsive Next.js web applications, custom backend API services, and high-speed database systems with an absolute focus on clean software execution.
@@ -193,8 +193,8 @@ class ProjectShowcase extends Component
             animate={{ opacity: 1, scale: 1 }}
             transition={{
               type: "spring",
-              stiffness: 100,
-              damping: 15,
+              stiffness: 200,
+              damping: 22,
               delay: 0.9,
             }}
             className="mt-10 flex flex-wrap items-center gap-4"

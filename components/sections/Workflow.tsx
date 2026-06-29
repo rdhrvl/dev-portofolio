@@ -19,20 +19,37 @@ function AnimatedNumber({ value, isActive }: { value: number; isActive: boolean 
   const springs = useSpring({
     from: { number: 0 },
     to: { number: inView ? value : 0 },
-    delay: 200,
-    config: { mass: 1, tension: 80, friction: 15 },
+    delay: 0,
+    config: { mass: 1, tension: 100, friction: 18 },
     immediate: !!shouldReduceMotion,
   });
 
   return (
     <div
-      className={`inline-flex items-center justify-center w-14 h-14 rounded-full border-2 transition-all duration-500 ${
-        isActive
-          ? "border-slate-900 bg-slate-900 text-white shadow-md shadow-slate-900/20"
-          : "border-slate-200 bg-white text-slate-300"
+      className={`relative inline-flex items-center justify-center w-14 h-14 rounded-full transition-colors duration-300 bg-white ${
+        isActive ? "text-slate-900 shadow-lg shadow-slate-900/10" : "text-slate-300"
       }`}
     >
-      <animated.span ref={ref} className="text-2xl font-bold">
+      {/* Background static border */}
+      <div className="absolute inset-0 rounded-full border-2 border-slate-200 transition-opacity duration-300" />
+      
+      {/* Animated SVG wrap border starting from the left edge (rotate-180) */}
+      <svg className="absolute inset-0 w-full h-full rotate-180 overflow-visible" viewBox="0 0 56 56">
+        <motion.circle
+          cx="28"
+          cy="28"
+          r="27"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          className="text-slate-900"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: isActive ? 1 : 0 }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
+        />
+      </svg>
+
+      <animated.span ref={ref} className="text-2xl font-bold relative z-10">
         {springs.number.to((n: number) => `0${Math.floor(n)}`)}
       </animated.span>
     </div>
@@ -42,7 +59,7 @@ function AnimatedNumber({ value, isActive }: { value: number; isActive: boolean 
 export default function Workflow() {
   const containerRef = useRef<HTMLDivElement>(null);
   const lineRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  const isInView = useInView(containerRef, { once: true, margin: "-80px" });
   const shouldReduceMotion = useReducedMotion();
   const [scrollProgress, setScrollProgress] = useState(0);
 
@@ -75,23 +92,26 @@ export default function Workflow() {
     const line = lineRef.current;
     if (!line) return;
 
-    const trigger = ScrollTrigger.create({
-      trigger: containerRef.current,
-      start: "top 75%",
-      end: "bottom 60%",
-      scrub: true,
-      onUpdate: (self) => {
-        setScrollProgress(self.progress);
-        gsap.to(line, {
-          scaleX: self.progress,
-          duration: 0.1,
-          ease: "none",
-        });
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top 75%",
+        end: "bottom 60%",
+        scrub: true, // Use instant scrub without lag
       },
+      onUpdate: function() {
+        // Perfectly sync the react state with the visual progress of the timeline
+        setScrollProgress(this.progress());
+      }
+    });
+
+    tl.to(line, {
+      scaleX: 1,
+      ease: "none",
     });
 
     return () => {
-      trigger.kill();
+      tl.kill();
     };
   }, [shouldReduceMotion]);
 
@@ -132,7 +152,7 @@ export default function Workflow() {
                   transition={{
                     duration: 0.7,
                     ease: [0.16, 1, 0.3, 1],
-                    delay: shouldReduceMotion ? 0 : idx * 0.2,
+                    delay: shouldReduceMotion ? 0 : idx * 0.15,
                   }}
                   className="p-6 rounded-2xl border border-slate-100 bg-slate-50/50 hover:bg-white transition-colors duration-300"
                 >
