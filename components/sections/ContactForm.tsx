@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { sendEmailAction } from "@/app/actions/send-email";
 import { AnimateSection } from "@/components/ui/AnimateSection";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({ name: "", email: "", details: "", honeypot: "" });
@@ -12,6 +12,15 @@ export default function ContactForm() {
 
   const [activeField, setActiveField] = useState<string | null>(null);
   const shouldReduceMotion = useReducedMotion();
+
+  // Auto-dismiss toast notification after 6 seconds
+  useEffect(() => {
+    if (!feedback) return;
+    const timer = setTimeout(() => {
+      setFeedback(null);
+    }, 6000);
+    return () => clearTimeout(timer);
+  }, [feedback]);
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,7 +40,53 @@ export default function ContactForm() {
   };
 
   return (
-    <section id="contact" className="bg-slate-900 text-white py-24 sm:py-32">
+    <section id="contact" className="bg-slate-900 text-white py-24 sm:py-32 relative">
+      {/* Floating Toast Notification (Corporate Professional Style) */}
+      <AnimatePresence>
+        {feedback && (
+          <motion.div
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -15, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -10, scale: 0.96 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed top-20 sm:top-24 right-4 sm:right-6 z-50 max-w-sm w-[calc(100vw-2rem)] sm:w-[380px] p-4 rounded-lg border border-slate-200/90 bg-white shadow-xl flex items-start justify-between gap-3 text-slate-900"
+          >
+            <div className="flex items-start gap-3 min-w-0">
+              {feedback.success ? (
+                <div className="h-8 w-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5">
+                  <svg className="h-5 w-5 fill-current" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                </div>
+              ) : (
+                <div className="h-8 w-8 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center shrink-0 mt-0.5">
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                </div>
+              )}
+              <div className="min-w-0">
+                <h4 className="text-sm font-bold text-slate-900 leading-tight">
+                  {feedback.success ? "Pesan Berhasil Terkirim" : "Gagal Mengirim Pesan"}
+                </h4>
+                <p className="text-xs text-slate-600 leading-relaxed mt-1">
+                  {feedback.message}
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setFeedback(null)}
+              className="text-slate-400 hover:text-slate-700 transition-colors p-1 rounded-md hover:bg-slate-100 shrink-0 mt-0.5"
+              aria-label="Tutup notifikasi"
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="mx-auto max-w-3xl px-6 text-center">
         <AnimateSection className="max-w-3xl px-6 text-center">
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
@@ -40,20 +95,24 @@ export default function ContactForm() {
           <p className="mx-auto mt-6 max-w-xl text-md leading-relaxed text-slate-300">
             Tell me about your product requirements and target timeline. I will outline a recommended system architecture and provide a response within two business days.
           </p>
+          <div className="mt-4 inline-flex items-center gap-2 text-xs text-slate-400">
+            <span>Prefer to inspect source code first?</span>
+            <a
+              href="https://github.com/rdhrvl"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-emerald-400 hover:text-emerald-300 font-semibold underline underline-offset-4 transition-colors"
+            >
+              <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24">
+                <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+              </svg>
+              View GitHub Profile (@rdhrvl) &rarr;
+            </a>
+          </div>
         </AnimateSection>
         
         <AnimateSection variant="scaleUp" className="mt-12 text-left bg-white text-slate-900 p-8 rounded-2xl border border-slate-800 shadow-xl max-w-xl mx-auto">
           <form onSubmit={handleFormSubmit} className="space-y-6">
-            {feedback && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className={`p-4 rounded-lg text-sm font-semibold ${feedback.success ? "bg-emerald-50 text-emerald-800" : "bg-rose-50 text-rose-800"}`}
-              >
-                {feedback.message}
-              </motion.div>
-            )}
-            
             {/* Honeypot field - visually hidden to prevent spam */}
             <div style={{ display: "none" }} aria-hidden="true">
               <label htmlFor="website">Website</label>

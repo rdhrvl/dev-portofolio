@@ -39,15 +39,26 @@ export async function sendEmailAction(formData: {
   }
 
   try {
-    const transporter = nodemailer.createTransport({
-      host,
-      port,
-      secure: port === 465,
-      auth: {
-        user,
-        pass,
-      },
-    });
+    const isGmail = host.toLowerCase().includes("gmail");
+    const transporter = nodemailer.createTransport(
+      isGmail
+        ? {
+            service: "gmail",
+            auth: {
+              user,
+              pass,
+            },
+          }
+        : {
+            host,
+            port,
+            secure: port === 465,
+            auth: {
+              user,
+              pass,
+            },
+          }
+    );
 
     await transporter.sendMail({
       from: `"${name}" <${user}>`,
@@ -59,13 +70,22 @@ export async function sendEmailAction(formData: {
 
     return {
       success: true,
-      message: "Message sent successfully!"
+      message: "Terima kasih! Pesan Anda berhasil terkirim. Saya akan segera membalas pesan Anda."
     };
   } catch (error: unknown) {
     console.error("SMTP error:", error);
+    const errorMsg = error instanceof Error ? error.message : "Gagal terhubung dengan server email.";
+    
+    if (errorMsg.includes("535") || errorMsg.includes("BadCredentials") || errorMsg.includes("Username and Password not accepted")) {
+      return {
+        success: false,
+        message: "Maaf, pengiriman email gagal karena kendala otentikasi server. Silakan periksa kredensial email Anda."
+      };
+    }
+
     return {
       success: false,
-      message: error instanceof Error ? error.message : "Failed to send email."
+      message: "Maaf, terjadi kendala saat mengirim pesan. Silakan coba kembali beberapa saat lagi."
     };
   }
 }

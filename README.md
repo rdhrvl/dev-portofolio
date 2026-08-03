@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# revaldev Portfolio
 
-## Getting Started
+Web portofolio pribadi **Ridho Revaldy Saputra (Reval)** — Full-Stack Web Developer (Next.js, Laravel, Livewire, React, TypeScript).
 
-First, run the development server:
+Dibangun dengan performa tinggi, animasi halus, SSG, dan dukungan SEO sebagai prioritas utama.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Tech Stack
+
+| Kategori | Teknologi |
+|---|---|
+| Framework | Next.js 16.2.9 (App Router, Turbopack, Server Actions, SSG) |
+| UI Library | React 19.2.4 |
+| Bahasa | TypeScript 5.x |
+| Styling | Tailwind CSS 4.x (`@tailwindcss/postcss`) |
+| Komponen Khusus | Phantom UI (`@aejkatappaja/phantom-ui`) |
+| Smooth Scroll | Lenis 1.3.25 |
+| Scroll Animation | GSAP 3.15.0 (ScrollTrigger) |
+| Page/Element Transition | Framer Motion 12.42.0 |
+| Physics Animation | React Spring (`@react-spring/web` 10.1.2) |
+| Email Transport | Nodemailer 9.0.1 (via Server Action) |
+
+## Struktur Direktori
+
+```text
+dev-portofolio/
+├── app/                # Routes & Layouts (App Router)
+│   ├── actions/         # Server Actions (send-email.ts)
+│   ├── projects/        # /projects & /projects/[slug]
+│   ├── layout.tsx
+│   └── page.tsx          # Beranda
+├── components/
+│   ├── layout/           # Header, Footer, Logobar
+│   ├── providers/        # SmoothScrollProvider, PageTransitionProvider
+│   ├── sections/         # Hero, About, Experience, Skills, dst.
+│   └── ui/               # Komponen atomik (Card, Loader, dll.)
+├── data/                 # Sumber konten statis (projects, skills, values, experience)
+├── lib/                  # Helper (animations.ts)
+├── types/                # Interface TypeScript
+└── public/               # Aset statis
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Detail arsitektur lengkap ada di [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md).
+Panduan visual & copywriting ada di [`docs/DESIGN.md`](./docs/DESIGN.md).
+Aturan kerja untuk AI coding agent ada di [`docs/AGENTS.md`](./docs/AGENTS.md).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Menjalankan Proyek
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm install
+npm run dev      # http://localhost:3000
+```
 
-## Learn More
+Perintah lain:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run build    # Type-check + build produksi
+npm run start    # Jalankan build produksi
+npm run lint      # ESLint
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Environment Variables
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Buat `.env.local` (tidak wajib untuk development — tanpa ini, sistem otomatis masuk **Mode Simulasi SMTP**):
 
-## Deploy on Vercel
+```env
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=emailanda@gmail.com
+SMTP_PASS=app_password_anda
+CONTACT_RECEIVER=ridhorevaldysaputra@gmail.com
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+> Tanpa variabel SMTP di atas, `app/actions/send-email.ts` **tidak boleh error** — ia harus fallback ke mode simulasi dan mencatat isi pesan di console. Ini adalah perilaku yang disengaja, bukan bug — lihat [`AGENTS.md`](./AGENTS.md) untuk detail kenapa ini penting untuk tidak diubah tanpa sengaja.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Menambah Proyek Baru ke Portofolio
+
+1. Buat file baru di `data/projects/<slug>.ts` mengikuti interface `Project` di `types/index.ts`.
+2. Daftarkan di `data/projects/index.ts` (agregator).
+3. Next.js akan otomatis men-generate halaman statis `/projects/<slug>` lewat `generateStaticParams()`.
+4. Ikuti struktur copywriting Konteks → Tantangan → Solusi → Hasil (lihat `DESIGN.md` § Voice & Copywriting).
+
+## Catatan Git
+
+`AGENTS.md`, `CLAUDE.md`, dan `DOCUMENTATION.md` sengaja ada di `.gitignore` — ini adalah dokumen kerja internal/agent, bukan bagian dari source of truth publik repo.

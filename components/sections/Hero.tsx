@@ -106,13 +106,15 @@ class ProjectShowcase extends Component
     const cleanCommand = commandInput.trim().toLowerCase();
     let response = "";
     if (cleanCommand === 'help') {
-      response = "Available commands: about, skills, projects, contact, clear";
+      response = "Available commands: about, skills, projects, github, contact, clear";
     } else if (cleanCommand === 'about') {
       response = "Reval is a professional full-stack web developer and programmer specializing in Next.js, Laravel, and Livewire.";
     } else if (cleanCommand === 'skills') {
       response = "Frontend: TypeScript, Next.js, React.js | Backend: Laravel, Livewire, Node.js, SQL";
     } else if (cleanCommand === 'projects') {
       response = "1. Vertex Business Dashboard  2. Nordic Living Storefront. Type 'projects' to check details.";
+    } else if (cleanCommand === 'github') {
+      response = "GitHub: https://github.com/rdhrvl (@rdhrvl) | Public repositories & open-source projects.";
     } else if (cleanCommand === 'contact') {
       response = "Email: ridhorevaldysaputra@gmail.com | Use the contact form below to get in touch.";
     } else if (cleanCommand === 'clear') {
@@ -134,7 +136,7 @@ class ProjectShowcase extends Component
     setCommandInput('');
   };
 
-  const headlineText = "Next.js & Laravel engineer building fast, client-ready web products.";
+  const headlineText = "Turning complex business ideas into fast, reliable web applications.";
   const words = headlineText.split(" ");
 
   return (
@@ -185,7 +187,7 @@ class ProjectShowcase extends Component
             transition={{ delay: 0.45, duration: 0.55 }}
             className="mt-6 text-lg leading-relaxed text-slate-600 max-w-lg"
           >
-            I design and engineer responsive Next.js web applications, custom backend API services, and high-speed database systems with an absolute focus on clean software execution.
+            I help businesses launch scalable digital products through modern full-stack development, custom API architecture, and performance-first engineering powered by Next.js and Laravel.
           </motion.p>
 
           <motion.div
@@ -213,7 +215,7 @@ class ProjectShowcase extends Component
               whileHover={shouldReduceMotion ? {} : { y: -2 }}
               transition={{ duration: 0.2 }}
             >
-              View My Projects
+              View Case Studies
             </motion.a>
           </motion.div>
         </div>

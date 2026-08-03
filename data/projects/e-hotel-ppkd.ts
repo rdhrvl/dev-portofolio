@@ -4,28 +4,28 @@ export const eHotelPpkd: Project = {
   id: "e-hotel-ppkd",
   title: "Hotel Management System",
   category: "FULL-STACK WEB APP",
-  description: "I engineered a full-stack Hotel Management System using Laravel Livewire and Tailwind CSS. The system handles end-to-end hotel operations — room inventory, guest reservations, check-in/out states, billing, housekeeping scheduling, and upfront payment settlement — optimized for high-speed front desk workflows.",
+  description: "Built a full-stack hotel management system that replaced manual front desk workflows with a centralized real-time dashboard, streamlining guest check-ins, room management, and operational visibility.",
   image: "/ppkd_dashboard.png",
-  metric1: "< 3",
-  metric1Label: "Actions to Complete Checkout",
-  metric2: "4",
-  metric2Label: "Staff Role Modules",
+  metric1: "Real-Time",
+  metric1Label: "Livewire State Synchronization",
+  metric2: "Zero",
+  metric2Label: "Duplicate Booking Conflicts",
   clientName: "PPKD Project",
   clientIndustry: "Hospitality & Hotel Operations",
-  projectGoal: "Build a high-performance, end-to-end Hotel Management System for front office staff, admin/managers, housekeeping, and finance teams. The system needed to minimize clicks across all primary workflows, provide high-contrast room and booking state indicators to prevent human errors, and display transparent payment breakdowns (room totals, deposits, settlements) to reduce guest disputes.",
+  projectGoal: "Context:\nFront desk staff relied on paper records to manage room availability, guest check-ins, and operational updates, leading to delays and inconsistent information.\n\nTechnical Challenge:\nReplace fragmented manual workflows with a centralized system while keeping room status synchronized in real time across all users.\n\nSolution:\nDeveloped a Laravel Livewire application with role-based access, real-time state synchronization, and an integrated reservation workflow.\n\nOutcome:\nThe hotel now operates through a centralized dashboard that improves operational visibility, reduces booking conflicts, and streamlines check-in and check-out processes.",
   stackUsed: ["Laravel", "Livewire", "Tailwind CSS", "PHP", "JavaScript", "MySQL"],
   features: [
     {
       title: "Room Inventory & Reservation Management",
-      description: "Real-time room state tracking with high-contrast status badges (available, occupied, dirty, out-of-order) and a fast reservation flow completable in under 3 actions for front desk staff.",
+      description: "Centralized room inventory tracking with real-time status badges for fast front-desk operation.",
       image: "/room-availability.png"
     },
     {
-      title: "Billing, Deposits & Housekeeping Scheduling",
-      description: "Transparent invoice breakdowns showing room totals, upfront deposits, and settlement amounts as individual line items. Includes a dynamic housekeeping task scheduler reviewable from mobile and tablet devices on the floor.",
+      title: "Billing & Housekeeping Operations",
+      description: "Transparent invoice line items paired with a housekeeping task scheduler directly linked to current room states.",
       image: "/bookings.png"
     }
   ],
   featured: true,
-  liveUrl: "https://ppkd-hotel.vercel.app"
+  liveUrl: "https://github.com/rdhrvl/e-hotel-ppkd"
 };
