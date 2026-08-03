@@ -272,7 +272,7 @@ class ProjectShowcase extends Component
             </div>
 
             {/* Window Body */}
-            <div className="flex-1 p-6 overflow-y-auto min-h-0 select-text">
+            <div className="flex-1 p-6 overflow-y-auto custom-scrollbar min-h-0 select-text">
               {terminalTab === 'terminal' && (
                 <div className="flex flex-col h-full justify-between">
                   <div className="space-y-1.5">
@@ -298,7 +298,7 @@ class ProjectShowcase extends Component
               )}
 
               {terminalTab === 'editor' && (
-                <pre className="text-[11px] leading-relaxed whitespace-pre-wrap select-text overflow-x-auto text-slate-300">
+                <pre className="text-[11px] leading-relaxed whitespace-pre-wrap select-text overflow-x-auto custom-scrollbar text-slate-300">
                   <code>
                     {mockCode.split('\n').map((line, i) => {
                       const styledLine = line

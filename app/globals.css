@@ -32,3 +32,93 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
 }
+
+/* ==========================================================================
+   Custom Scrollbar System (Universal Page & Dark Containers)
+   ========================================================================== */
+
+/* Firefox Global Default (Light Theme Page Body) */
+html, body {
+  scrollbar-width: thin !important;
+  scrollbar-color: #94a3b8 #f8fafc !important;
+}
+
+/* WebKit Global Default (Light Theme Page Body) */
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  width: 8px !important;
+  height: 8px !important;
+}
+
+html::-webkit-scrollbar-track, body::-webkit-scrollbar-track {
+  background: #f8fafc !important;
+}
+
+html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
+  background: #cbd5e1 !important;
+  border-radius: 4px !important;
+}
+
+html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8 !important;
+}
+
+/* All Dark Sections, Pre, Code, Terminal, and Custom Scrollbar Containers */
+.bg-slate-900,
+.bg-slate-950,
+.custom-scrollbar,
+pre,
+code,
+[class*="bg-slate-900"],
+[class*="bg-slate-950"] {
+  scrollbar-width: thin !important;
+  scrollbar-color: #334155 #090d16 !important;
+}
+
+.bg-slate-900::-webkit-scrollbar,
+.bg-slate-950::-webkit-scrollbar,
+.custom-scrollbar::-webkit-scrollbar,
+pre::-webkit-scrollbar,
+code::-webkit-scrollbar,
+[class*="bg-slate-900"]::-webkit-scrollbar,
+[class*="bg-slate-950"]::-webkit-scrollbar {
+  width: 6px !important;
+  height: 6px !important;
+}
+
+.bg-slate-900::-webkit-scrollbar-track,
+.bg-slate-950::-webkit-scrollbar-track,
+.custom-scrollbar::-webkit-scrollbar-track,
+pre::-webkit-scrollbar-track,
+code::-webkit-scrollbar-track,
+[class*="bg-slate-900"]::-webkit-scrollbar-track,
+[class*="bg-slate-950"]::-webkit-scrollbar-track {
+  background: #090d16 !important;
+  border-radius: 4px !important;
+}
+
+.bg-slate-900::-webkit-scrollbar-thumb,
+.bg-slate-950::-webkit-scrollbar-thumb,
+.custom-scrollbar::-webkit-scrollbar-thumb,
+pre::-webkit-scrollbar-thumb,
+code::-webkit-scrollbar-thumb,
+[class*="bg-slate-900"]::-webkit-scrollbar-thumb,
+[class*="bg-slate-950"]::-webkit-scrollbar-thumb {
+  background: #334155 !important;
+  border-radius: 4px !important;
+}
+
+.bg-slate-900::-webkit-scrollbar-thumb:hover,
+.bg-slate-950::-webkit-scrollbar-thumb:hover,
+.custom-scrollbar::-webkit-scrollbar-thumb:hover,
+pre::-webkit-scrollbar-thumb:hover,
+code::-webkit-scrollbar-thumb:hover,
+[class*="bg-slate-900"]::-webkit-scrollbar-thumb:hover,
+[class*="bg-slate-950"]::-webkit-scrollbar-thumb:hover {
+  background: #475569 !important;
+}
+
+/* Tailwind v4 Utility */
+@utility custom-scrollbar {
+  scrollbar-width: thin !important;
+  scrollbar-color: #334155 #090d16 !important;
+}
